@@ -92,6 +92,7 @@ export function useAfterRender() {
   afterRenderFunctions.forEach(({ func, args }) => {
     func(args);
   });
+  console.log(allComponents);
 };
 
 function useAfterReRender(compName) {
@@ -100,6 +101,7 @@ function useAfterReRender(compName) {
     const { func, args } = afterRenderFunctions[i];
     func(args);
   };
+  console.log(allComponents);
 };
 
 // export function useEffect(callback, stateObj = null) {
