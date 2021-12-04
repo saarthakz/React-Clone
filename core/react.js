@@ -60,7 +60,8 @@ export function useState(initVal) {
     stateObj = new Object({
       value: initVal,
       parent: allComponents[allComponents.length - 1].name,
-      // uid: UID(),
+      uid: UID(),
+      sideEffect: undefined
     });
     allComponents[allComponents.length - 1].states.push(stateObj);
 
@@ -74,6 +75,7 @@ export function useState(initVal) {
     if (!reRenderFlag && allComponents[allComponents.length - 1]?.name == stateObj.parent) return; // setState is called before component's initial render
     const parent = allComponents.find((comp) => comp.name == stateObj.parent);
     reRender(parent.compFunc, parent.props, parent.name);
+    stateObj.sideEffect();
   };
 
   return [stateObj, setState];
@@ -92,7 +94,6 @@ export function useAfterRender() {
   afterRenderFunctions.forEach(({ func, args }) => {
     func(args);
   });
-  console.log(allComponents);
 };
 
 function useAfterReRender(compName) {
@@ -101,18 +102,14 @@ function useAfterReRender(compName) {
     const { func, args } = afterRenderFunctions[i];
     func(args);
   };
-  console.log(allComponents);
 };
 
-// export function useEffect(callback, stateObj = null) {
-//   if (stateObj == null) {
-//     callback();
-//     return;
-//   };
+export function useEffect(callback, stateObj = null) {
+  if (stateObj == null) {
+    callback();
+    return;
+  };
 
-//   if (stateObj.state != cachedStates.get(stateObj.uid)) {
-//     callback();
-//     cachedStates.set(stateObj.uid, stateObj.state);
-//     return;
-//   };
-// };
+  stateObj.sideEffect = callback;
+
+};

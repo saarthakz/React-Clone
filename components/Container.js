@@ -1,4 +1,4 @@
-import { useState, addAfterRender } from "../core/react.js";
+import { useState, addAfterRender, useEffect } from "../core/react.js";
 import { refreshElement, UID } from "../core/util.js";
 
 export default function Container() {
@@ -7,6 +7,10 @@ export default function Container() {
 
   const incBtnID = "incrementBtn" + UID();
   const decBtnID = "decrementBtn" + UID();
+
+  useEffect(() => {
+    console.log("Count changed");
+  }, count);
 
   function afterRender([count, setCount, incBtnID, decBtnID]) {
     const incBtn = refreshElement(incBtnID);
