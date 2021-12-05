@@ -1,6 +1,5 @@
 import { UID } from "./util.js";
 
-// const cachedStates = new Map();
 const allComponents = new Array();
 let reRenderFlag = false;
 let reRenderingComp = undefined;
@@ -66,7 +65,6 @@ export function useState(initVal) {
     allComponents[allComponents.length - 1].states.push(stateObj);
 
   };
-  // cachedStates.set(stateObj.uid, stateObj);
 
   function setState(newVal) {
     if (stateObj.value === newVal) return; // Value being passed is the same as state value
@@ -75,7 +73,7 @@ export function useState(initVal) {
     if (!reRenderFlag && allComponents[allComponents.length - 1]?.name == stateObj.parent) return; // setState is called before component's initial render
     const parent = allComponents.find((comp) => comp.name == stateObj.parent);
     reRender(parent.compFunc, parent.props, parent.name);
-    stateObj.sideEffect();
+    if (stateObj.sideEffect) stateObj.sideEffect();
   };
 
   return [stateObj, setState];
@@ -109,7 +107,5 @@ export function useEffect(callback, stateObj = null) {
     callback();
     return;
   };
-
   stateObj.sideEffect = callback;
-
 };

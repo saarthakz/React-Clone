@@ -15,7 +15,6 @@ export default function Container() {
   function afterRender([count, setCount, incBtnID, decBtnID]) {
     const incBtn = refreshElement(incBtnID);
     incBtn.addEventListener("click", () => {
-      console.log('+ clicked');
       let tempCount = count.value;
       setCount(++tempCount);
     });
@@ -23,8 +22,6 @@ export default function Container() {
     const decBtn = refreshElement(decBtnID);
     decBtn.addEventListener("click", () => {
       let tempCount = count.value;
-      console.log('- clicked');
-      console.log(tempCount);
       setCount(--tempCount);
     });
   };
